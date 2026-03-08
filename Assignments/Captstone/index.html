@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KM Sandbox — Capstone</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0d1117;
+            color: #e6edf3;
+            min-height: 100vh;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.1rem 2.5rem;
+            background: #161b22;
+            border-bottom: 1px solid #21262d;
+        }
+        .nav-brand { font-weight: 700; font-size: 1.1rem; color: #58a6ff; text-decoration: none; }
+        nav span { color: #484f58; font-size: 0.9rem; }
+
+        .hero {
+            text-align: center;
+            padding: 5rem 2rem 3.5rem;
+            border-bottom: 1px solid #21262d;
+        }
+        .badge {
+            display: inline-block;
+            background: #1f2d3d;
+            color: #58a6ff;
+            border: 1px solid #1f6feb;
+            border-radius: 2rem;
+            padding: 0.25rem 0.9rem;
+            font-size: 0.75rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 1.2rem;
+        }
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #e6edf3 40%, #58a6ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.9rem;
+        }
+        .hero p {
+            color: #8b949e;
+            font-size: 1.05rem;
+            max-width: 560px;
+            margin: 0 auto;
+            line-height: 1.75;
+        }
+
+        .container { max-width: 960px; margin: 0 auto; padding: 3rem 2rem; }
+
+        h2 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #8b949e;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #21262d;
+        }
+
+        /* Overview cards */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+        .stat-card {
+            background: #161b22;
+            border: 1px solid #21262d;
+            border-radius: 8px;
+            padding: 1.2rem 1.4rem;
+        }
+        .stat-label { font-size: 0.8rem; color: #8b949e; margin-bottom: 0.4rem; }
+        .stat-value { font-size: 1.5rem; font-weight: 700; color: #58a6ff; }
+        .stat-sub { font-size: 0.78rem; color: #484f58; margin-top: 0.25rem; }
+
+        /* Section list */
+        .section-list { margin-bottom: 3rem; }
+        .section-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid #21262d;
+        }
+        .section-item:last-child { border-bottom: none; }
+        .section-num {
+            min-width: 28px;
+            height: 28px;
+            background: #1f2d3d;
+            color: #58a6ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-top: 0.1rem;
+        }
+        .section-info h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.25rem; }
+        .section-info p { font-size: 0.85rem; color: #8b949e; line-height: 1.6; }
+
+        /* Models table */
+        .model-table { width: 100%; border-collapse: collapse; margin-bottom: 3rem; font-size: 0.9rem; }
+        .model-table th {
+            text-align: left;
+            padding: 0.6rem 1rem;
+            color: #8b949e;
+            font-weight: 600;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            border-bottom: 1px solid #21262d;
+        }
+        .model-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #21262d;
+            color: #c9d1d9;
+        }
+        .model-table tr:last-child td { border-bottom: none; }
+        .model-table tr:hover td { background: #161b22; }
+        .best-tag {
+            display: inline-block;
+            background: #1a3a1a;
+            color: #3fb950;
+            border: 1px solid #238636;
+            border-radius: 4px;
+            padding: 0.1rem 0.45rem;
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+
+        /* Key findings */
+        .findings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+        .finding-card {
+            background: #161b22;
+            border: 1px solid #21262d;
+            border-radius: 8px;
+            padding: 1.2rem 1.4rem;
+        }
+        .finding-card h3 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem; color: #58a6ff; }
+        .finding-card p { font-size: 0.82rem; color: #8b949e; line-height: 1.65; }
+
+        .open-btn {
+            display: inline-block;
+            background: #238636;
+            color: #fff;
+            padding: 0.65rem 1.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+            margin-top: 0.5rem;
+        }
+        .open-btn:hover { background: #2ea043; }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid #21262d;
+            color: #484f58;
+            font-size: 0.82rem;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a class="nav-brand" href="#">KM Sandbox</a>
+    <span>Capstone Project &mdash; Course 01</span>
+</nav>
+
+<section class="hero">
+    <div class="badge">Capstone &mdash; Course 01</div>
+    <h1>Network Intrusion Detection</h1>
+    <p>A machine learning pipeline to classify network traffic as benign or one of five cyberattack categories, modeled after the CICIDS 2017 dataset.</p>
+</section>
+
+<div class="container">
+
+    <!-- Stats -->
+    <h2>Project Overview</h2>
+    <div class="overview-grid">
+        <div class="stat-card">
+            <div class="stat-label">Dataset</div>
+            <div class="stat-value">CICIDS</div>
+            <div class="stat-sub">Synthetic, 2017-style</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Target Classes</div>
+            <div class="stat-value">6</div>
+            <div class="stat-sub">BENIGN + 5 attack types</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Models Trained</div>
+            <div class="stat-value">3</div>
+            <div class="stat-sub">LR, RF, GBM</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Notebook</div>
+            <div class="stat-value">.ipynb</div>
+            <div class="stat-sub">7 guided sections</div>
+        </div>
+    </div>
+
+    <!-- Notebook sections -->
+    <h2>Notebook Sections</h2>
+    <div class="section-list">
+        <div class="section-item">
+            <div class="section-num">1</div>
+            <div class="section-info">
+                <h3>Problem Understanding</h3>
+                <p>Define the analytical goal, target variable, and real-world relevance of ML-based intrusion detection.</p>
+            </div>
+        </div>
+        <div class="section-item">
+            <div class="section-num">2</div>
+            <div class="section-info">
+                <h3>Data Exploration</h3>
+                <p>Load dataset, inspect shape and types, visualize class distribution, and analyze missing values.</p>
+            </div>
+        </div>
+        <div class="section-item">
+            <div class="section-num">3</div>
+            <div class="section-info">
+                <h3>Data Cleaning &amp; Preparation</h3>
+                <p>Remove duplicates, cap outliers at the 99th percentile, fix negative IAT values, and impute with median.</p>
+            </div>
+        </div>
+        <div class="section-item">
+            <div class="section-num">4</div>
+            <div class="section-info">
+                <h3>Feature Engineering</h3>
+                <p>Create Total Packets, Bytes per Packet, and Packet Asymmetry features; encode labels; scale features.</p>
+            </div>
+        </div>
+        <div class="section-item">
+            <div class="section-num">5</div>
+            <div class="section-info">
+                <h3>Modeling &amp; Evaluation</h3>
+                <p>Train Logistic Regression, Random Forest, and Gradient Boosting on an 80/20 stratified split.</p>
+            </div>
+        </div>
+        <div class="section-item">
+            <div class="section-num">6</div>
+            <div class="section-info">
+                <h3>Insight Generation</h3>
+                <p>Per-class precision, recall, and F1 analysis; SOC triage recommendations based on model confidence.</p>
+            </div>
+        </div>
+        <div class="section-item">
+            <div class="section-num">7</div>
+            <div class="section-info">
+                <h3>Limitations &amp; Future Work</h3>
+                <p>Identifies class imbalance, synthetic data constraints, and paths forward with SMOTE and deep learning.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Models -->
+    <h2>Models Compared</h2>
+    <table class="model-table">
+        <thead>
+            <tr>
+                <th>Model</th>
+                <th>Strengths</th>
+                <th>Split</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Logistic Regression</td>
+                <td>Fast, interpretable linear baseline</td>
+                <td>80 / 20 stratified</td>
+            </tr>
+            <tr>
+                <td>Random Forest <span class="best-tag">Top</span></td>
+                <td>Robust to outliers; provides feature importance</td>
+                <td>80 / 20 stratified</td>
+            </tr>
+            <tr>
+                <td>Gradient Boosting</td>
+                <td>Learns complex non-linear boundaries</td>
+                <td>80 / 20 stratified</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Key findings -->
+    <h2>Key Findings</h2>
+    <div class="findings-grid">
+        <div class="finding-card">
+            <h3>DDoS &amp; Port Scan</h3>
+            <p>High F1 scores due to distinct traffic patterns — extreme byte rates and very short flow durations make these classes easy to separate.</p>
+        </div>
+        <div class="finding-card">
+            <h3>Minority Classes</h3>
+            <p>Botnet and WebAttack show lower recall due to class imbalance. SMOTE or class-weight tuning are recommended next steps.</p>
+        </div>
+        <div class="finding-card">
+            <h3>SOC Application</h3>
+            <p>High-confidence DDoS and PortScan predictions can be auto-triaged; ambiguous predictions routed to human analysts.</p>
+        </div>
+    </div>
+
+    <!-- Link to notebook -->
+    <h2>Open Notebook</h2>
+    <p style="color:#8b949e; font-size:0.9rem; margin-bottom:0.75rem;">Run the full analysis in Jupyter to reproduce results and visualizations.</p>
+    <a class="open-btn" href="capstone_analysis.ipynb">Open capstone_analysis.ipynb</a>
+
+</div>
+
+<footer>
+    KM Sandbox &mdash; Capstone Project &mdash; Kayron Macon &mdash; 2026
+</footer>
+
+</body>
+</html>
