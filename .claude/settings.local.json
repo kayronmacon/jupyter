@@ -8,7 +8,9 @@
       "Bash(jupyter nbconvert:*)",
       "Bash(git status:*)",
       "Bash(rm:*)",
-      "Bash(.conda/python.exe:*)"
+      "Bash(.conda/python.exe:*)",
+      "Bash(pip install:*)",
+      "Bash(conda run:*)"
     ]
   }
 }
